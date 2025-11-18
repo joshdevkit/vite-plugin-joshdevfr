@@ -1,0 +1,41 @@
+{
+  "name": "vite-plugin-joshdevfr",
+  "version": "1.0.0",
+  "description": "Vite plugin for PHP MVC frameworks with hot reload and asset management created by JoshDev.",
+  "main": "index.js",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./index.js"
+    }
+  },
+  "files": [
+    "index.js",
+    "README.md"
+  ],
+  "keywords": [
+    "vite",
+    "vite-plugin",
+    "php",
+    "mvc",
+    "hot-reload",
+    "hmr",
+    "asset-management"
+  ],
+  "author": "JoshDevFr",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/vite-plugin-joshdevfr.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/vite-plugin-joshdevfr/issues"
+  },
+  "homepage": "https://github.com/yourusername/vite-plugin-joshdevfr#readme",
+  "peerDependencies": {
+    "vite": "^5.0.0 || ^6.0.0 || ^7.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
