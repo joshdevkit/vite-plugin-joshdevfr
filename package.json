@@ -1,5 +1,5 @@
 {
-  "name": "joshdevvite-plugin",
+  "name": "joshdevvite-plugin-hrm",
   "version": "1.0.3",
   "description": "Vite plugin for PHP MVC frameworks with hot reload and asset management created by JoshDev.",
   "main": "index.js",
@@ -8,7 +8,7 @@
   "exports": {
     ".": {
       "import": "./index.js",
-      "types": "./index.d.ts" 
+      "types": "./index.d.ts"
     }
   },
   "files": [
@@ -43,5 +43,8 @@
   },
   "devDependencies": {
     "@types/node": "^24.10.1"
+  },
+  "dependencies": {
+    "joshdevvite-plugin": "file:joshdevvite-plugin-1.0.3.tgz"
   }
 }
