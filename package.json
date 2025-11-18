@@ -1,6 +1,6 @@
 {
   "name": "joshdevfr-plugin",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Vite plugin for PHP MVC frameworks with hot reload and asset management created by JoshDev.",
   "main": "index.js",
   "type": "module",
