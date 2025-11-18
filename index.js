@@ -1,5 +1,3 @@
-import joshdevFr from './src/plugin.js';
-import { JoshDevFrConfig } from './src/types.js';
+import joshdevFr from "./src/plugin.js";
 
 export default joshdevFr;
-export { JoshDevFrConfig };
