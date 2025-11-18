@@ -1,11 +1,11 @@
-// File: index.js
 import fs from "fs";
 import path from "path";
+import { resolveDevServerUrl } from "./utils.js";
 
 /**
  * Vite plugin for PHP MVC Framework by JoshDevFr
  * Handles hot file generation for development and manifest management for production
- * 
+ *
  * @param {Object} config - Plugin configuration
  * @param {string|string[]} config.input - Entry point(s) for your application
  * @param {string} config.publicDirectory - Public directory path (default: "public")
@@ -22,28 +22,14 @@ export default function joshdevFr(config = {}) {
     } = config;
 
     let viteDevServerUrl;
-    const pluginName = "vite-plugin-joshdevfr";
+    const pluginName = "joshdevfr-plugin";
 
     return {
         name: pluginName,
         enforce: "post",
 
         config: (userConfig, { command }) => {
-            if (command === "serve") {
-                return {
-                    base: "",
-                    build: {
-                        manifest: true,
-                        outDir: path.join(publicDirectory, buildDirectory),
-                        rollupOptions: {
-                            input: Array.isArray(input) ? input : [input],
-                        },
-                    },
-                };
-            }
-
-            return {
-                base: `/${buildDirectory}/`,
+            const baseOptions = {
                 build: {
                     manifest: true,
                     outDir: path.join(publicDirectory, buildDirectory),
@@ -52,12 +38,23 @@ export default function joshdevFr(config = {}) {
                     },
                 },
             };
+
+            if (command === "serve") {
+                return {
+                    base: "",
+                    ...baseOptions,
+                };
+            }
+
+            return {
+                base: `/${buildDirectory}/`,
+                ...baseOptions,
+            };
         },
 
         configureServer(server) {
             const hotFilePath = path.join(publicDirectory, hotFile);
 
-            // Ensure public directory exists
             if (!fs.existsSync(publicDirectory)) {
                 fs.mkdirSync(publicDirectory, { recursive: true });
             }
@@ -82,12 +79,10 @@ export default function joshdevFr(config = {}) {
             const hotFilePath = path.join(publicDirectory, hotFile);
 
             if (this.meta.watchMode || process.env.NODE_ENV === "development") {
-                // Write the hot file with dev server URL
                 const url = viteDevServerUrl || "http://localhost:5173";
                 fs.writeFileSync(hotFilePath, url);
                 console.log(`\n  ${pluginName}: Hot file created at ${hotFilePath}`);
             } else {
-                // Remove hot file in production build
                 if (fs.existsSync(hotFilePath)) {
                     fs.unlinkSync(hotFilePath);
                 }
@@ -96,7 +91,7 @@ export default function joshdevFr(config = {}) {
 
         buildEnd() {
             const hotFilePath = path.join(publicDirectory, hotFile);
-            // Remove hot file after build ends
+
             if (fs.existsSync(hotFilePath) && !this.meta.watchMode) {
                 fs.unlinkSync(hotFilePath);
             }
@@ -104,6 +99,7 @@ export default function joshdevFr(config = {}) {
 
         closeBundle() {
             const hotFilePath = path.join(publicDirectory, hotFile);
+
             if (fs.existsSync(hotFilePath)) {
                 fs.unlinkSync(hotFilePath);
                 console.log(`\n  ${pluginName}: Hot file removed`);
@@ -111,33 +107,33 @@ export default function joshdevFr(config = {}) {
         },
 
         writeBundle() {
-            const viteManifestPath = path.join(publicDirectory, buildDirectory, ".vite", "manifest.json");
-            const targetManifestPath = path.join(publicDirectory, buildDirectory, "manifest.json");
+            const viteManifestPath = path.join(
+                publicDirectory,
+                buildDirectory,
+                ".vite",
+                "manifest.json"
+            );
+
+            const targetManifestPath = path.join(
+                publicDirectory,
+                buildDirectory,
+                "manifest.json"
+            );
 
             if (fs.existsSync(viteManifestPath)) {
-                // Read the manifest
                 const manifest = fs.readFileSync(viteManifestPath, "utf-8");
-                
-                // Write to target location
+
                 fs.writeFileSync(targetManifestPath, manifest);
-                
-                // Remove .vite directory
-                fs.rmSync(path.join(publicDirectory, buildDirectory, ".vite"), { recursive: true, force: true });
-                
-                console.log(`\n  ${pluginName}: Manifest moved to ${targetManifestPath}`);
+
+                fs.rmSync(path.join(publicDirectory, buildDirectory, ".vite"), {
+                    recursive: true,
+                    force: true,
+                });
+
+                console.log(
+                    `\n  ${pluginName}: Manifest moved to ${targetManifestPath}`
+                );
             }
         },
     };
-}
-
-/**
- * Resolve the dev server URL from Vite config
- */
-function resolveDevServerUrl(config) {
-    const { server } = config;
-    const protocol = server.https ? "https" : "http";
-    const host = server.host || "localhost";
-    const port = server.port || 5173;
-
-    return `${protocol}://${host}:${port}`;
 }
