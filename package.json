@@ -26,12 +26,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/vite-plugin-joshdevfr.git"
+    "url": "https://github.com/joshdevkit/vite-plugin-joshdevfr.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/vite-plugin-joshdevfr/issues"
+    "url": "https://github.com/joshdevkit/vite-plugin-joshdevfr/issues"
   },
-  "homepage": "https://github.com/yourusername/vite-plugin-joshdevfr#readme",
+  "homepage": "https://github.com/joshdevkit/vite-plugin-joshdevfr#readme",
   "peerDependencies": {
     "vite": "^5.0.0 || ^6.0.0 || ^7.0.0"
   },
